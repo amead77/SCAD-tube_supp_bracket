@@ -1,4 +1,4 @@
-# Bracket for putting tubs on
+# Bracket for putting tubes on
 
 Customisable SCAD file.
 
