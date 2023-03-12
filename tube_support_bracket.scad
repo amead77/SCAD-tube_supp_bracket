@@ -5,7 +5,7 @@ c_width = 65;
 //how thick it is
 c_thickness = 18;
 //diameter of what is going into it
-c_tube_dia = 37.5; //37.5;
+c_tube_dia = 37.5;
 //how deep it will go in
 c_tube_depth = 15;
 
@@ -14,7 +14,7 @@ c_drop_in = true;
 //put 4x screw holes
 c_mounting_screws = true;
 //size of screws
-c_mounting_screw_size = 6;
+c_mounting_screw_size = 6.4;
 c_mounting_screw_offset = 7;
 
 module create_base() {
