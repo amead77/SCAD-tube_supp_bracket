@@ -7,7 +7,7 @@ c_thickness = 18;
 //diameter of what is going into it
 c_tube_dia = 37.5;
 //how deep it will go in
-c_tube_depth = 15;
+c_tube_depth = 19;
 
 //cutout to the top
 c_drop_in = true;
