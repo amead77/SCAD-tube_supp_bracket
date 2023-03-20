@@ -6,7 +6,7 @@ c_width = 65;
 c_thickness = 18;
 //diameter of what is going into it
 c_tube_dia = 37.5;
-//how deep it will go in
+//how deep it will go in, anything greater than c_thickness will be all the way through
 c_tube_depth = 19;
 
 //cutout to the top
@@ -17,6 +17,8 @@ c_mounting_screws = true;
 c_mounting_screw_size = 6.4;
 c_mounting_screw_offset = 7;
 
+c_tubetype = "round"; //[round, square]
+
 module create_base() {
     cube([c_width, c_width, c_thickness]);
 }
@@ -24,17 +26,28 @@ module create_base() {
 
 module remove_tube() {
     if (c_drop_in == true) {
-        translate([c_width / 2, c_width / 2, c_thickness - c_tube_depth])
-        hull() {
-            cylinder(h=c_tube_depth+1, r=c_tube_dia / 2);
-            translate([c_width / 2, 0, 0]) {
+        if (c_tubetype == "round") {
+            translate([c_width / 2, c_width / 2, c_thickness - c_tube_depth])
+            hull() {
                 cylinder(h=c_tube_depth+1, r=c_tube_dia / 2);
+                translate([c_width / 2, 0, 0]) {
+                    cylinder(h=c_tube_depth+1, r=c_tube_dia / 2);
+                }
             }
         }
-
+        if (c_tubetype == "square") {
+            translate([(c_width / 2) - (c_tube_dia / 2), (c_width / 2) - (c_tube_dia / 2), c_thickness - c_tube_depth])
+                cube([c_tube_dia+c_width, c_tube_dia, (c_tube_depth * 2) + 1], center = false);
+        }
     } else {
-        translate([c_width / 2, c_width / 2, c_thickness - c_tube_depth])
-            cylinder(h=c_tube_depth+1, r=c_tube_dia / 2);
+        if (c_tubetype == "round") {
+            translate([c_width / 2, c_width / 2, c_thickness - c_tube_depth])
+                cylinder(h=c_tube_depth+1, r=c_tube_dia / 2);
+        }
+        if (c_tubetype == "square") {
+            translate([c_width / 2, c_width / 2, c_thickness - c_tube_depth])
+                cube([c_tube_dia, c_tube_dia, (c_tube_depth * 2) + 1], center = true);
+        }
     }
 }
 
