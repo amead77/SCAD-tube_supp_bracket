@@ -154,7 +154,7 @@ module create_sq_edge(outer, inner, thickness) {
     }
 }
 
-module create_mask() {
+module create_mask(xx, yy) {
     echo("--> create_mask()");
     if (c_tubetype == "round") {
         echo("# round");
@@ -163,7 +163,7 @@ module create_mask() {
         if (c_lip == true) {
             difference() {
                 cylinder(h=c_tube_depth, r=c_tube_dia / 2);            
-                translate([0,0,c_tube_depth-c_lipdepth]) 
+                translate([xx,yy,c_tube_depth-c_lipdepth]) 
                     ring((c_tube_dia+1)/2, (c_tube_dia-c_lipsize)/2, c_lipdepth+1);
             }
         } else {
@@ -174,9 +174,9 @@ module create_mask() {
         echo("# square");
         if (c_lip == true) {
             difference() {
-                translate([0,0, c_tube_depth/2])
+                translate([xx,yy, c_tube_depth/2])
                     cube([c_tube_dia, c_tube_dia, c_tube_depth], center=true);
-                translate([0,0, c_tube_depth-(c_lipdepth/2)])
+                translate([xx,yy, c_tube_depth-(c_lipdepth/2)])
                     difference() {
                         create_sq_edge(outer = c_tube_dia, inner = c_tube_dia-c_lipsize, thickness = c_lipdepth);
                         //cube([c_tube_dia, c_tube_dia, c_lipdepth], center=true);
@@ -184,7 +184,7 @@ module create_mask() {
                     }
             }
         } else {
-            translate([0,0,c_tube_depth/2]) 
+            translate([xx,yy,c_tube_depth/2]) 
                 cube([c_tube_dia, c_tube_dia, c_tube_depth], center=true);
         }
     }
@@ -256,11 +256,19 @@ if (run == 3) {
     render() {
         difference() {
             create_base();
-            translate([c_width / 2, c_width / 2, 0]) 
-                create_mask();
-                if (c_mounting_screws == true) {
-                    remove_screws();
-                }
+            if (c_drop_in == false) {
+                translate([c_width / 2, c_width / 2, 0]) 
+                    create_mask(0,0);
+            } else {
+                translate([c_width / 2, c_width / 2, 0]) 
+                    hull() {
+                        create_mask(0,0);
+                        create_mask(-100,0);
+                    }
+            }
+            if (c_mounting_screws == true) {
+                remove_screws();
+            }
         }
     }
 }
